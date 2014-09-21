@@ -9,7 +9,18 @@ namespace Pistol.NET
 
     static void Main(string[] args)
     {
-      PlayHumanAgainstComputer();
+      var options = new Options();
+      if (CommandLine.Parser.Default.ParseArguments(args, options))
+      {
+        if (options.Mode == "HumanVsComputer")
+        {
+          PlayHumanAgainstComputer();
+        }
+        else
+        {
+          PlayTwoComputersAgainstEachOther();
+        }
+      }
     }
 
     static void PlayTwoComputersAgainstEachOther()
@@ -87,7 +98,12 @@ namespace Pistol.NET
         Console.Write("{0}, you turn [LL, LR, RL, RR]: ", shooter.Name);
 
         // Ask for what hand to shoot with and which hand to shoot at
-        var command = Console.ReadLine().ToUpper();
+        var command = Console.ReadLine();
+
+        if (!string.IsNullOrEmpty(command))
+        {
+          command = command.ToUpper();
+        }
 
         if (command == "LL")
         {
