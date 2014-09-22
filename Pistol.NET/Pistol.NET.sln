@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pistol.NET", "Pistol.NET\Pistol.NET.csproj", "{79D09DB4-0699-44E4-B614-107FA86DB448}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pistol.NET.Tests", "Pistol.NET.Tests\Pistol.NET.Tests.csproj", "{08B96983-9FA0-4D11-9B57-08A54F1363F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{79D09DB4-0699-44E4-B614-107FA86DB448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79D09DB4-0699-44E4-B614-107FA86DB448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79D09DB4-0699-44E4-B614-107FA86DB448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08B96983-9FA0-4D11-9B57-08A54F1363F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08B96983-9FA0-4D11-9B57-08A54F1363F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08B96983-9FA0-4D11-9B57-08A54F1363F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08B96983-9FA0-4D11-9B57-08A54F1363F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
