@@ -5,7 +5,7 @@ namespace Pistol.NET
 {
   class Program
   {
-    static Random rnd_ = new Random();
+    static readonly Random rnd_ = new Random();
 
     static void Main(string[] args)
     {
@@ -27,7 +27,7 @@ namespace Pistol.NET
     {
       var shooter = new Player("Hailbop");
       var victim = new Player("Zum-zum");
-      var players = new List<Player>() { shooter, victim };
+      var players = new List<Player> { shooter, victim };
 
       while (!shooter.IsPlayerDead && !victim.IsPlayerDead)
       {
@@ -53,7 +53,7 @@ namespace Pistol.NET
 
       var human = new Player(humanName);
       var computer = new Player("Dr. Löky");
-      var players = new List<Player>() { human, computer };
+      var players = new List<Player> { human, computer };
 
       var isHumanInTurn = true;
 
@@ -109,7 +109,7 @@ namespace Pistol.NET
         {
           if (!shooter.IsLeftHandDead && !victim.IsLeftHandDead)
           {
-            victim.LeftHand += shooter.LeftHand;
+            victim.ApplyDamage(Gun.Left, shooter.LeftHand);
             return;
           }
         }
@@ -117,7 +117,7 @@ namespace Pistol.NET
         {
           if (!shooter.IsLeftHandDead && !victim.IsRightHandDead)
           {
-            victim.RightHand += shooter.LeftHand;
+            victim.ApplyDamage(Gun.Right, shooter.LeftHand);
             return;
           }
         }
@@ -125,7 +125,7 @@ namespace Pistol.NET
         {
           if (!shooter.IsRightHandDead && !victim.IsLeftHandDead)
           {
-            victim.LeftHand += shooter.RightHand;
+            victim.ApplyDamage(Gun.Left, shooter.RightHand);
             return;
           }
         }
@@ -133,7 +133,7 @@ namespace Pistol.NET
         {
           if (!shooter.IsRightHandDead && !victim.IsRightHandDead)
           {
-            victim.RightHand += shooter.RightHand;
+            victim.ApplyDamage(Gun.Right, shooter.RightHand);
             return;
           }
         }
@@ -175,63 +175,41 @@ namespace Pistol.NET
       {
         // Shoot at victim right hand
 
-        if (shooter.IsLeftHandDead)
-        {
-          victim.RightHand += shooter.RightHand;
-          return;
-        }
-        else if (shooter.IsRightHandDead)
-        {
-          victim.RightHand += shooter.LeftHand;
-          return;
-        }
-        else
-        {
-          // Shooter has both hands alive, decide which hand to use when shooting at victim's right hand
+        int shooterHand;
 
-          // For now just choose one hand at random
-          victim.RightHand += rnd_.Next() % 2 == 0 ? shooter.RightHand : shooter.LeftHand;
-          return;
-        }
+        // Decide which hand to shoot with
+        if (shooter.IsLeftHandDead) shooterHand = shooter.RightHand;
+        else if (shooter.IsRightHandDead) shooterHand = shooter.LeftHand;
+        else shooterHand = rnd_.NextBoolean() ? shooter.RightHand : shooter.LeftHand;
+
+        victim.ApplyDamage(Gun.Right, shooterHand);
       }
       else if (victim.IsRightHandDead)
       {
         // Shoot at victim left hand
 
-        if (shooter.IsLeftHandDead)
-        {
-          victim.LeftHand += shooter.RightHand;
-          return;
-        }
-        else if (shooter.IsRightHandDead)
-        {
-          victim.LeftHand += shooter.LeftHand;
-          return;
-        }
-        else
-        {
-          // Shooter has both hands alive, decide which hand to use when shooting at victim's right hand
+        int shooterHand;
 
-          // For now just choose one hand at random
-          victim.LeftHand += rnd_.Next() % 2 == 0 ? shooter.RightHand : shooter.LeftHand;
-          return;
-        }
+        // Decide which hand to shoot with
+        if (shooter.IsLeftHandDead) shooterHand = shooter.RightHand;
+        else if (shooter.IsRightHandDead) shooterHand = shooter.LeftHand;
+        else shooterHand = rnd_.NextBoolean() ? shooter.RightHand : shooter.LeftHand;
+
+        victim.ApplyDamage(Gun.Left, shooterHand);
       }
       else
       {
-        // Decide which hand to shoot at
-        var shooterHand = rnd_.Next() % 2 == 0 ? shooter.RightHand : shooter.LeftHand;
+        int shooterHand;
 
-        if (rnd_.Next() % 2 == 0)
-        {
-          victim.LeftHand += shooterHand;
-          return;
-        }
-        else
-        {
-          victim.RightHand += shooterHand;
-          return;
-        }
+        // Decide which hand to shoot with
+        if (shooter.IsLeftHandDead) shooterHand = shooter.RightHand;
+        else if (shooter.IsRightHandDead) shooterHand = shooter.LeftHand;
+        else shooterHand = rnd_.NextBoolean() ? shooter.RightHand : shooter.LeftHand;
+
+        // Decide which hand to shoot at
+        var victimHand = rnd_.NextBoolean() ? Gun.Left : Gun.Right;
+
+        victim.ApplyDamage(victimHand, shooterHand);
       }
     }
   }
