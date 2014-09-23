@@ -117,7 +117,7 @@ namespace Pistol.NET
       {
         Console.Write("{0}, you turn [LL, LR, RL, RR]: ", shooter.Name);
 
-        // Ask for what hand to shoot with and which hand to shoot at
+        // Ask for what gun to shoot with and which gun to shoot at
         var command = Console.ReadLine();
 
         if (!string.IsNullOrEmpty(command))
@@ -127,33 +127,33 @@ namespace Pistol.NET
 
         if (command == "LL")
         {
-          if (!shooter.IsLeftHandDead && !victim.IsLeftHandDead)
+          if (!shooter.IsLeftGunDead && !victim.IsLeftGunDead)
           {
-            victim.ApplyDamage(Gun.Left, shooter.LeftHand);
+            victim.ApplyDamage(Gun.Left, shooter.LeftGun);
             return;
           }
         }
         else if (command == "LR")
         {
-          if (!shooter.IsLeftHandDead && !victim.IsRightHandDead)
+          if (!shooter.IsLeftGunDead && !victim.IsRightGunDead)
           {
-            victim.ApplyDamage(Gun.Right, shooter.LeftHand);
+            victim.ApplyDamage(Gun.Right, shooter.LeftGun);
             return;
           }
         }
         else if (command == "RL")
         {
-          if (!shooter.IsRightHandDead && !victim.IsLeftHandDead)
+          if (!shooter.IsRightGunDead && !victim.IsLeftGunDead)
           {
-            victim.ApplyDamage(Gun.Left, shooter.RightHand);
+            victim.ApplyDamage(Gun.Left, shooter.RightGun);
             return;
           }
         }
         else if (command == "RR")
         {
-          if (!shooter.IsRightHandDead && !victim.IsRightHandDead)
+          if (!shooter.IsRightGunDead && !victim.IsRightGunDead)
           {
-            victim.ApplyDamage(Gun.Right, shooter.RightHand);
+            victim.ApplyDamage(Gun.Right, shooter.RightGun);
             return;
           }
         }
@@ -171,10 +171,10 @@ namespace Pistol.NET
     static void PrintPlayer(Player player)
     {
       var playerName = player.Name.PadRight(Player.MaxNameLength);
-      var leftHandStatus = player.IsLeftHandDead ? "-" : player.LeftHand.ToString(CultureInfo.InvariantCulture);
-      var rightHandStatus = player.IsRightHandDead ? "-" : player.RightHand.ToString(CultureInfo.InvariantCulture);
+      var leftGunStatus = player.IsLeftGunDead ? "-" : player.LeftGun.ToString(CultureInfo.InvariantCulture);
+      var rightGunStatus = player.IsRightGunDead ? "-" : player.RightGun.ToString(CultureInfo.InvariantCulture);
 
-      Console.WriteLine("{0}  {1}  {2}", playerName, leftHandStatus, rightHandStatus);
+      Console.WriteLine("{0}  {1}  {2}", playerName, leftGunStatus, rightGunStatus);
     }
   }
 }

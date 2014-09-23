@@ -14,8 +14,8 @@ namespace Pistol.NET.Tests
 
       // Assert
       Assert.That(player.Name, Is.EqualTo(""));
-      Assert.That(player.LeftHand, Is.EqualTo(1));
-      Assert.That(player.RightHand, Is.EqualTo(1));
+      Assert.That(player.LeftGun, Is.EqualTo(1));
+      Assert.That(player.RightGun, Is.EqualTo(1));
     }
 
     [Test]

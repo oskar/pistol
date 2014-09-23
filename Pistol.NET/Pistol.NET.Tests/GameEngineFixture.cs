@@ -13,16 +13,16 @@ namespace Pistol.NET.Tests
       var player2 = new Player("");
 
       Assert.That(player1.Name, Is.EqualTo(""));
-      Assert.That(player1.LeftHand, Is.EqualTo(1));
-      Assert.That(player1.RightHand, Is.EqualTo(1));
+      Assert.That(player1.LeftGun, Is.EqualTo(1));
+      Assert.That(player1.RightGun, Is.EqualTo(1));
 
       // Act
       GameEngine.ComputerBang(player1, player2);
 
       // Assert
       Assert.That(player1.Name, Is.EqualTo(""));
-      Assert.That(player1.LeftHand, Is.EqualTo(1));
-      Assert.That(player1.RightHand, Is.EqualTo(1));
+      Assert.That(player1.LeftGun, Is.EqualTo(1));
+      Assert.That(player1.RightGun, Is.EqualTo(1));
     }
   }
 }
