@@ -7,8 +7,16 @@ namespace Pistol.NET
   {
     private const int MaxDamage = 5;
 
+    public const int MaxNameLength = 20;
+
     public Player(string name)
     {
+      if (name == null)
+        throw new ArgumentNullException("name");
+
+      if (name.Length > MaxNameLength)
+        name = name.Substring(0, MaxNameLength);
+
       Name = name;
       LeftHand = 1;
       RightHand = 1;

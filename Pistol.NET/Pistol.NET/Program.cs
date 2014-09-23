@@ -1,10 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Pistol.NET
 {
+  using System.Linq;
+
   class Program
   {
+    private static readonly Random random_ = new Random();
+
+    private static readonly IList<string> computerNames_ = new List<string>
+                                                   {
+                                                     "Hail Bop",
+                                                     "Default",
+                                                     "Firewater",
+                                                     "Waveforms",
+                                                     "Zumm zumm",
+                                                     "WOR",
+                                                     "Storm",
+                                                     "Silver Rays"
+                                                   };
+
     static void Main(string[] args)
     {
       var options = new Options();
@@ -23,8 +40,16 @@ namespace Pistol.NET
 
     static void PlayTwoComputersAgainstEachOther()
     {
-      var shooter = new Player("Hailbop");
-      var victim = new Player("Zum-zum");
+      // Get a random name for the first computer
+      var shooter = new Player(random_.NextItem(computerNames_));
+
+      // Create a new list of all computer names excluding the selected for the first computer
+      var computerNamesExcludingSelected = computerNames_.ToList();
+      computerNamesExcludingSelected.Remove(shooter.Name);
+
+      // Get another random name for the second computer
+      var victim = new Player(random_.NextItem(computerNamesExcludingSelected));
+
       var players = new List<Player> { shooter, victim };
 
       while (!shooter.IsPlayerDead && !victim.IsPlayerDead)
@@ -46,11 +71,15 @@ namespace Pistol.NET
 
     static void PlayHumanAgainstComputer()
     {
-      Console.Write("Please enter your name: ");
-      var humanName = Console.ReadLine();
+      string humanName = null;
+      while (string.IsNullOrEmpty(humanName))
+      {
+        Console.Write("Please enter your name [max 20 chars]: ");
+        humanName = Console.ReadLine();
+      }
 
       var human = new Player(humanName);
-      var computer = new Player("Dr. Löky");
+      var computer = new Player(random_.NextItem(computerNames_));
       var players = new List<Player> { human, computer };
 
       var isHumanInTurn = true;
@@ -77,14 +106,7 @@ namespace Pistol.NET
       // Game is over, one of the players is dead
       PrintPlayers(players);
 
-      if (human.IsPlayerDead)
-      {
-        Console.WriteLine("Sorry {0}, you lost!", human.Name);
-      }
-      else
-      {
-        Console.WriteLine("Congratulations {0}, you won!", human.Name);
-      }
+      Console.WriteLine(human.IsPlayerDead ? "Sorry {0}, you lost!" : "Congratulations {0}, you won!", human.Name);
 
       Console.ReadLine();
     }
@@ -135,8 +157,6 @@ namespace Pistol.NET
             return;
           }
         }
-
-        Console.WriteLine("Invalid move, try again");
       }
     }
 
@@ -150,15 +170,11 @@ namespace Pistol.NET
 
     static void PrintPlayer(Player player)
     {
-      if (player.IsPlayerDead)
-      {
-        Console.WriteLine("{0}:\tDEAD!", player.Name);
-        return;
-      }
+      var playerName = player.Name.PadRight(Player.MaxNameLength);
+      var leftHandStatus = player.IsLeftHandDead ? "-" : player.LeftHand.ToString(CultureInfo.InvariantCulture);
+      var rightHandStatus = player.IsRightHandDead ? "-" : player.RightHand.ToString(CultureInfo.InvariantCulture);
 
-      var leftHandStatus = player.IsLeftHandDead ? "-" : player.LeftHand.ToString();
-      var rightHandStatus = player.IsRightHandDead ? "-" : player.RightHand.ToString();
-      Console.WriteLine("{0}:\t{1}\t{2}", player.Name, leftHandStatus, rightHandStatus);
+      Console.WriteLine("{0}  {1}  {2}", playerName, leftHandStatus, rightHandStatus);
     }
   }
 }
