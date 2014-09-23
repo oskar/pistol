@@ -2,7 +2,7 @@
 
 namespace Pistol.NET
 {
-  public class GameEngine
+  public class GameEngine : IGameEngine
   {
     private static readonly Random rnd_ = new Random();
 
@@ -85,6 +85,21 @@ namespace Pistol.NET
       var shooterGun = GetRandomGun();
 
       Shoot(shooter, shooterGun, victim, victimGun);
+    }
+
+    public Tuple<Gun, Gun> Bang(int shooterLeftGun, int shooterRightGun, int victimLeftGun, int victimRightGun)
+    {
+      return new Tuple<Gun, Gun>(GetRandomGun(), GetRandomGun());
+    }
+
+    public Gun BangOneOnTwo(int shooterGun, int victimLeftGun, int victimRightGun)
+    {
+      return GetRandomGun();
+    }
+
+    public Gun BangTwoOnOne(int shooterLeftGun, int shooterRightGun, int victimGun)
+    {
+      return GetRandomGun();
     }
   }
 }

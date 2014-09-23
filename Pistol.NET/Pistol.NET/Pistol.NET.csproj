@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="GameEngine.cs" />
     <Compile Include="Gun.cs" />
+    <Compile Include="IGameEngine.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
