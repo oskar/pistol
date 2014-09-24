@@ -55,7 +55,7 @@ namespace Pistol.NET
 
     public void PlayHumanAgainstComputer()
     {
-      var humanName = ConsoleUtils.Ask("Please enter your name [max 20 chars]: ", "");
+      var humanName = ConsoleUtils.Ask("Please enter your name [max 20 chars]: ", 1, Player.MaxNameLength);
       var human = new Player(humanName);
       var computer = new Player(random_.NextItem(computerNames_));
       var players = new List<Player> { human, computer };
@@ -89,7 +89,7 @@ namespace Pistol.NET
       Console.ReadLine();
     }
 
-    static void Bang(IBangStrategy bangStrategy, Player shooter, Player victim)
+    private static void Bang(IBangStrategy bangStrategy, Player shooter, Player victim)
     {
       if (shooter.IsPlayerDead)
         throw new InvalidOperationException("Shooter is dead and cannot shoot.");
