@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameEngineFixture.cs" />
+    <Compile Include="RandomBangStrategyFixture.cs" />
     <Compile Include="PlayerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomExtensionsFixture.cs" />
