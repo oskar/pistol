@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace Pistol.NET
 {
@@ -55,7 +54,7 @@ namespace Pistol.NET
 
       while (!shooter.IsPlayerDead && !victim.IsPlayerDead)
       {
-        PrintPlayers(players);
+        PlayerUtils.PrintPlayers(players);
         ComputerBang(bangStrategy, shooter, victim);
 
         // Swap turns
@@ -66,7 +65,7 @@ namespace Pistol.NET
         Console.ReadLine();
       }
 
-      PrintPlayers(players);
+      PlayerUtils.PrintPlayers(players);
       Console.ReadLine();
     }
 
@@ -87,7 +86,7 @@ namespace Pistol.NET
 
       while (!human.IsPlayerDead && !computer.IsPlayerDead)
       {
-        PrintPlayers(players);
+        PlayerUtils.PrintPlayers(players);
 
         if (isHumanInTurn)
         {
@@ -105,10 +104,8 @@ namespace Pistol.NET
       }
 
       // Game is over, one of the players is dead
-      PrintPlayers(players);
-
+      PlayerUtils.PrintPlayers(players);
       Console.WriteLine(human.IsPlayerDead ? "Sorry {0}, you lost!" : "Congratulations {0}, you won!", human.Name);
-
       Console.ReadLine();
     }
 
@@ -134,12 +131,12 @@ namespace Pistol.NET
       }
       else if (shooterGun != Gun.None && victimGun == Gun.None)
       {
-        var shooterGunDamage = GunDamageFromPlayer(shooter, shooterGun);
+        var shooterGunDamage = shooter.GetGunDamage(shooterGun);
         victimGun = bangStrategy.BangOneOnTwo(shooterGunDamage, victim.LeftGun, victim.RightGun);
       }
       else if (shooterGun == Gun.None && victimGun != Gun.None)
       {
-        var victimGunDamage = GunDamageFromPlayer(victim, victimGun);
+        var victimGunDamage = victim.GetGunDamage(victimGun);
         shooterGun = bangStrategy.BangTwoOnOne(shooter.LeftGun, shooter.RightGun, victimGunDamage);
       }
       else if (shooterGun == Gun.None && victimGun == Gun.None)
@@ -152,27 +149,6 @@ namespace Pistol.NET
       {
         throw new InvalidOperationException("");
       }
-
-      Shoot(shooter, shooterGun, victim, victimGun);
-    }
-
-    static int GunDamageFromPlayer(Player player, Gun gun)
-    {
-      switch (gun)
-      {
-        case Gun.Left: return player.LeftGun;
-        case Gun.Right: return player.RightGun;
-        default: throw new ArgumentOutOfRangeException("gun");
-      }
-    }
-
-    public static void Shoot(Player shooter, Gun shooterGun, Player victim, Gun victimGun)
-    {
-      if (shooterGun == Gun.None)
-        throw new ArgumentException("Shooter gun must be Left or Right", "shooterGun");
-
-      if (victimGun == Gun.None)
-        throw new ArgumentException("Victim gun must be Left or Right", "shooterGun");
 
       switch (shooterGun)
       {
@@ -228,23 +204,6 @@ namespace Pistol.NET
           }
         }
       }
-    }
-
-    static void PrintPlayers(IEnumerable<Player> players)
-    {
-      foreach (var player in players)
-      {
-        PrintPlayer(player);
-      }
-    }
-
-    static void PrintPlayer(Player player)
-    {
-      var playerName = player.Name.PadRight(Player.MaxNameLength);
-      var leftGunStatus = player.IsLeftGunDead ? "-" : player.LeftGun.ToString(CultureInfo.InvariantCulture);
-      var rightGunStatus = player.IsRightGunDead ? "-" : player.RightGun.ToString(CultureInfo.InvariantCulture);
-
-      Console.WriteLine("{0}  {1}  {2}", playerName, leftGunStatus, rightGunStatus);
     }
   }
 }

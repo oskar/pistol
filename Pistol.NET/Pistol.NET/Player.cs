@@ -69,5 +69,15 @@ namespace Pistol.NET
         throw new InvalidOperationException("Can only be called with gun set to Left or Right.");
       }
     }
+
+    public int GetGunDamage(Gun gun)
+    {
+      switch (gun)
+      {
+        case Gun.Left: return LeftGun;
+        case Gun.Right: return RightGun;
+        default: throw new ArgumentOutOfRangeException("gun");
+      }
+    }
   }
 }

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerUtils.cs" />
     <Compile Include="RandomBangStrategy.cs" />
     <Compile Include="Gun.cs" />
     <Compile Include="IBangStrategy.cs" />
