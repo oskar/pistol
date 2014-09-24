@@ -24,21 +24,22 @@ namespace Pistol.NET
 
     static void Main(string[] args)
     {
+      var gameEngine = new GameEngine();
       var options = new Options();
       if (CommandLine.Parser.Default.ParseArguments(args, options))
       {
         if (options.Mode == "HumanVsComputer")
         {
-          PlayHumanAgainstComputer();
+          PlayHumanAgainstComputer(gameEngine);
         }
         else
         {
-          PlayTwoComputersAgainstEachOther();
+          PlayTwoComputersAgainstEachOther(gameEngine);
         }
       }
     }
 
-    static void PlayTwoComputersAgainstEachOther()
+    static void PlayTwoComputersAgainstEachOther(IGameEngine gameEngine)
     {
       // Get a random name for the first computer
       var shooter = new Player(random_.NextItem(computerNames_));
@@ -55,7 +56,7 @@ namespace Pistol.NET
       while (!shooter.IsPlayerDead && !victim.IsPlayerDead)
       {
         PrintPlayers(players);
-        GameEngine.ComputerBang(shooter, victim);
+        ComputerBang(gameEngine, shooter, victim);
 
         // Swap turns
         var tmp = shooter;
@@ -69,7 +70,7 @@ namespace Pistol.NET
       Console.ReadLine();
     }
 
-    static void PlayHumanAgainstComputer()
+    static void PlayHumanAgainstComputer(IGameEngine gameEngine)
     {
       string humanName = null;
       while (string.IsNullOrEmpty(humanName))
@@ -95,7 +96,7 @@ namespace Pistol.NET
         }
         else
         {
-          GameEngine.ComputerBang(computer, human);
+          ComputerBang(gameEngine, computer, human);
           Console.ReadLine();
         }
 
@@ -109,6 +110,75 @@ namespace Pistol.NET
       Console.WriteLine(human.IsPlayerDead ? "Sorry {0}, you lost!" : "Congratulations {0}, you won!", human.Name);
 
       Console.ReadLine();
+    }
+
+    static void ComputerBang(IGameEngine gameEngine, Player shooter, Player victim)
+    {
+      if (shooter.IsPlayerDead)
+        throw new InvalidOperationException("Shooter is dead and cannot shoot.");
+
+      if (victim.IsPlayerDead)
+        throw new InvalidOperationException("Victim is already dead and cannot be shot at.");
+
+      var shooterGun = Gun.None;
+      if (shooter.IsLeftGunDead) shooterGun = Gun.Right;
+      else if (shooter.IsRightGunDead) shooterGun = Gun.Left;
+
+      var victimGun = Gun.None;
+      if (victim.IsLeftGunDead) victimGun = Gun.Right;
+      else if (victim.IsRightGunDead) victimGun = Gun.Left;
+
+      if (shooterGun != Gun.None && victimGun != Gun.None)
+      {
+        // This is the no-brainer move since both guns are fixed
+      }
+      else if (shooterGun != Gun.None && victimGun == Gun.None)
+      {
+        var shooterGunDamage = GunDamageFromPlayer(shooter, shooterGun);
+        victimGun = gameEngine.BangOneOnTwo(shooterGunDamage, victim.LeftGun, victim.RightGun);
+      }
+      else if (shooterGun == Gun.None && victimGun != Gun.None)
+      {
+        var victimGunDamage = GunDamageFromPlayer(victim, victimGun);
+        shooterGun = gameEngine.BangTwoOnOne(shooter.LeftGun, shooter.RightGun, victimGunDamage);
+      }
+      else if (shooterGun == Gun.None && victimGun == Gun.None)
+      {
+        var res = gameEngine.Bang(shooter.LeftGun, shooter.RightGun, victim.LeftGun, victim.RightGun);
+        shooterGun = res.Item1;
+        victimGun = res.Item2;
+      }
+      else
+      {
+        throw new InvalidOperationException("");
+      }
+
+      Shoot(shooter, shooterGun, victim, victimGun);
+    }
+
+    static int GunDamageFromPlayer(Player player, Gun gun)
+    {
+      switch (gun)
+      {
+        case Gun.Left: return player.LeftGun;
+        case Gun.Right: return player.RightGun;
+        default: throw new ArgumentOutOfRangeException("gun");
+      }
+    }
+
+    public static void Shoot(Player shooter, Gun shooterGun, Player victim, Gun victimGun)
+    {
+      if (shooterGun == Gun.None)
+        throw new ArgumentException("Shooter gun must be Left or Right", "shooterGun");
+
+      if (victimGun == Gun.None)
+        throw new ArgumentException("Victim gun must be Left or Right", "shooterGun");
+
+      switch (shooterGun)
+      {
+        case Gun.Left: victim.ApplyDamage(victimGun, shooter.LeftGun); break;
+        case Gun.Right: victim.ApplyDamage(victimGun, shooter.RightGun); break;
+      }
     }
 
     static void HumanBang(Player shooter, Player victim)

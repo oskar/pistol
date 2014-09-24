@@ -6,23 +6,16 @@ namespace Pistol.NET.Tests
   public class GameEngineFixture
   {
     [Test]
-    public void TestComputerBangDoesntModifyShooter()
+    public void TestBangOneOnTwo()
     {
       // Arrange
-      var player1 = new Player("");
-      var player2 = new Player("");
-
-      Assert.That(player1.Name, Is.EqualTo(""));
-      Assert.That(player1.LeftGun, Is.EqualTo(1));
-      Assert.That(player1.RightGun, Is.EqualTo(1));
+      var gameEngine = new GameEngine();
 
       // Act
-      GameEngine.ComputerBang(player1, player2);
+      var victimGun = gameEngine.BangOneOnTwo(1, 1, 1);
 
       // Assert
-      Assert.That(player1.Name, Is.EqualTo(""));
-      Assert.That(player1.LeftGun, Is.EqualTo(1));
-      Assert.That(player1.RightGun, Is.EqualTo(1));
+      Assert.That(victimGun, Is.Not.EqualTo(Gun.None));
     }
   }
 }
