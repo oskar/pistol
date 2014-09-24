@@ -44,9 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameEngine.cs" />
+    <Compile Include="RandomBangStrategy.cs" />
     <Compile Include="Gun.cs" />
-    <Compile Include="IGameEngine.cs" />
+    <Compile Include="IBangStrategy.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

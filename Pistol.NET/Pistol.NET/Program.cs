@@ -24,22 +24,22 @@ namespace Pistol.NET
 
     static void Main(string[] args)
     {
-      var gameEngine = new GameEngine();
+      var bangStrategy = new RandomBangStrategy();
       var options = new Options();
       if (CommandLine.Parser.Default.ParseArguments(args, options))
       {
         if (options.Mode == "HumanVsComputer")
         {
-          PlayHumanAgainstComputer(gameEngine);
+          PlayHumanAgainstComputer(bangStrategy);
         }
         else
         {
-          PlayTwoComputersAgainstEachOther(gameEngine);
+          PlayTwoComputersAgainstEachOther(bangStrategy);
         }
       }
     }
 
-    static void PlayTwoComputersAgainstEachOther(IGameEngine gameEngine)
+    static void PlayTwoComputersAgainstEachOther(IBangStrategy bangStrategy)
     {
       // Get a random name for the first computer
       var shooter = new Player(random_.NextItem(computerNames_));
@@ -56,7 +56,7 @@ namespace Pistol.NET
       while (!shooter.IsPlayerDead && !victim.IsPlayerDead)
       {
         PrintPlayers(players);
-        ComputerBang(gameEngine, shooter, victim);
+        ComputerBang(bangStrategy, shooter, victim);
 
         // Swap turns
         var tmp = shooter;
@@ -70,7 +70,7 @@ namespace Pistol.NET
       Console.ReadLine();
     }
 
-    static void PlayHumanAgainstComputer(IGameEngine gameEngine)
+    static void PlayHumanAgainstComputer(IBangStrategy bangStrategy)
     {
       string humanName = null;
       while (string.IsNullOrEmpty(humanName))
@@ -96,7 +96,7 @@ namespace Pistol.NET
         }
         else
         {
-          ComputerBang(gameEngine, computer, human);
+          ComputerBang(bangStrategy, computer, human);
           Console.ReadLine();
         }
 
@@ -112,7 +112,7 @@ namespace Pistol.NET
       Console.ReadLine();
     }
 
-    static void ComputerBang(IGameEngine gameEngine, Player shooter, Player victim)
+    static void ComputerBang(IBangStrategy bangStrategy, Player shooter, Player victim)
     {
       if (shooter.IsPlayerDead)
         throw new InvalidOperationException("Shooter is dead and cannot shoot.");
@@ -135,16 +135,16 @@ namespace Pistol.NET
       else if (shooterGun != Gun.None && victimGun == Gun.None)
       {
         var shooterGunDamage = GunDamageFromPlayer(shooter, shooterGun);
-        victimGun = gameEngine.BangOneOnTwo(shooterGunDamage, victim.LeftGun, victim.RightGun);
+        victimGun = bangStrategy.BangOneOnTwo(shooterGunDamage, victim.LeftGun, victim.RightGun);
       }
       else if (shooterGun == Gun.None && victimGun != Gun.None)
       {
         var victimGunDamage = GunDamageFromPlayer(victim, victimGun);
-        shooterGun = gameEngine.BangTwoOnOne(shooter.LeftGun, shooter.RightGun, victimGunDamage);
+        shooterGun = bangStrategy.BangTwoOnOne(shooter.LeftGun, shooter.RightGun, victimGunDamage);
       }
       else if (shooterGun == Gun.None && victimGun == Gun.None)
       {
-        var res = gameEngine.Bang(shooter.LeftGun, shooter.RightGun, victim.LeftGun, victim.RightGun);
+        var res = bangStrategy.Bang(shooter.LeftGun, shooter.RightGun, victim.LeftGun, victim.RightGun);
         shooterGun = res.Item1;
         victimGun = res.Item2;
       }
