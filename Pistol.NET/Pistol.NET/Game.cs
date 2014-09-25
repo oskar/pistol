@@ -100,29 +100,27 @@ namespace Pistol.NET
       Console.ReadLine();
     }
 
-    private static void Play(IEnumerable<Player> players)
+    public void Play(IEnumerable<Player> players)
     {
       var playersRing = new LinkedList<Player>(players);
       var currentPlayer = playersRing.First;
 
-      while (IsAtLeastTwoPlayersAlive(playersRing))
+      // Play as long as at least two players are alive
+      while (playersRing.Count(p => !p.IsPlayerDead) > 1)
       {
+        // Print game status
         PlayerUtils.PrintPlayers(playersRing);
 
-        // Current player shoots at next player in line
+        // Current player shoots at next alive player in line
         Bang(currentPlayer.Value, GetNextAlivePlayer(currentPlayer).Value);
 
-        //Console.ReadLine();
-
-        // Set next player to current
+        // Set next alive player to current (important to calculate next alive player again here
+        // because the previous next alive player might have been killed by the bang above)
         currentPlayer = GetNextAlivePlayer(currentPlayer);
       }
-    }
 
-
-    private static bool IsAtLeastTwoPlayersAlive(IEnumerable<Player> players)
-    {
-      return players.Count(p => !p.IsPlayerDead) > 1;
+      PlayerUtils.PrintPlayers(playersRing);
+      Console.WriteLine("Game over");
     }
 
     private static LinkedListNode<Player> GetNextAlivePlayer(LinkedListNode<Player> player)
@@ -182,6 +180,7 @@ namespace Pistol.NET
         throw new InvalidOperationException("");
       }
 
+      // Apply damage
       switch (shooterGun)
       {
         case Gun.Left: victim.ApplyDamage(victimGun, shooter.LeftGun); break;

@@ -5,7 +5,7 @@ namespace Pistol.NET
 {
   public class Options
   {
-    [Option("mode", DefaultValue = "HumanVsComputer")]
+    [Option("mode", HelpText = "Game mode, use H for human player and C for computer. For example HCC for a game with one player and two computers.")]
     public string Mode { get; set; }
 
     [HelpOption]
@@ -15,10 +15,9 @@ namespace Pistol.NET
       {
         Heading = new HeadingInfo("Pistol", "0.1"),
         Copyright = new CopyrightInfo("Oskar Hermansson", 2014),
-        //AdditionalNewLineAfterOption = true,
         AddDashesToOption = true
       };
-      help.AddPreOptionsLine("Usage: Pistol.exe -mode HumanVsComputer");
+      help.AddPreOptionsLine("Usage: Pistol.exe -mode HC");
       help.AddOptions(this);
 
       return help;

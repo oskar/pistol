@@ -1,6 +1,9 @@
 ﻿
 namespace Pistol.NET
 {
+  using System;
+  using System.Collections.Generic;
+
   class Program
   {
     static void Main(string[] args)
@@ -9,14 +12,34 @@ namespace Pistol.NET
       var options = new Options();
       if (CommandLine.Parser.Default.ParseArguments(args, options))
       {
-        if (options.Mode == "HumanVsComputer")
+        var mode = options.Mode;
+        if (string.IsNullOrEmpty(mode))
         {
-          game.PlayHumanAgainstComputer();
+          mode = ConsoleUtils.Ask("Please enter game mode: ", 1, 10);
         }
-        else
+
+        var players = new List<Player>();
+
+        foreach (var letter in mode)
         {
-          game.PlayTwoComputersAgainstEachOther();
+          if (letter == 'H')
+          {
+            var playerName = ConsoleUtils.Ask("Please enter your name: ", 1, Player.MaxNameLength);
+            players.Add(new Player(playerName, new HumanBangStrategy(playerName)));
+          }
+          else if (letter == 'C')
+          {
+            players.Add(new Player("Computer", new RandomBangStrategy()));
+          }
+          else
+          {
+            throw new ArgumentOutOfRangeException();
+          }
         }
+
+        game.Play(players);
+
+        Console.ReadLine();
       }
     }
   }
