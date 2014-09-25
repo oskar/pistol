@@ -86,6 +86,61 @@ namespace Pistol.NET
       Console.ReadLine();
     }
 
+    public void PlayThreePlayers()
+    {
+      var comp1 = new Player("Comp 1", new RandomBangStrategy());
+      var human = new Player("Oskar", new HumanBangStrategy("Oskar"));
+      var comp3 = new Player("Comp 3", new RandomBangStrategy());
+
+      var players = new[] { comp1, human, comp3 };
+
+      Play(players);
+
+      PlayerUtils.PrintPlayers(players);
+      Console.ReadLine();
+    }
+
+    private static void Play(IEnumerable<Player> players)
+    {
+      var playersRing = new LinkedList<Player>(players);
+      var currentPlayer = playersRing.First;
+
+      while (IsAtLeastTwoPlayersAlive(playersRing))
+      {
+        PlayerUtils.PrintPlayers(playersRing);
+
+        // Current player shoots at next player in line
+        Bang(currentPlayer.Value, GetNextAlivePlayer(currentPlayer).Value);
+
+        //Console.ReadLine();
+
+        // Set next player to current
+        currentPlayer = GetNextAlivePlayer(currentPlayer);
+      }
+    }
+
+
+    private static bool IsAtLeastTwoPlayersAlive(IEnumerable<Player> players)
+    {
+      return players.Count(p => !p.IsPlayerDead) > 1;
+    }
+
+    private static LinkedListNode<Player> GetNextAlivePlayer(LinkedListNode<Player> player)
+    {
+      var startingPlayer = player;
+
+      while (true)
+      {
+        // Get next player
+        player = player.Next ?? player.List.First;
+
+        if (player == startingPlayer)
+          return null;
+
+        if (!player.Value.IsPlayerDead) return player;
+      }
+    }
+
     private static void Bang(Player shooter, Player victim)
     {
       if (shooter.IsPlayerDead)
