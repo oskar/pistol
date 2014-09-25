@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using NUnit.Framework;
 
 namespace Pistol.NET.Tests
 {
@@ -9,11 +9,15 @@ namespace Pistol.NET.Tests
     [Test]
     public void TestPlayerConstructor()
     {
+      // Arrange
+      var bangStrategy = new RandomBangStrategy();
+
       // Act
-      var player = new Player("");
+      var player = new Player("", bangStrategy);
 
       // Assert
       Assert.That(player.Name, Is.EqualTo(""));
+      Assert.That(player.BangStrategy, Is.EqualTo(bangStrategy));
       Assert.That(player.LeftGun, Is.EqualTo(1));
       Assert.That(player.RightGun, Is.EqualTo(1));
     }
@@ -22,7 +26,7 @@ namespace Pistol.NET.Tests
     public void TestPlayerApplyDamage()
     {
       // Arrange
-      var player = new Player("");
+      var player = new Player("", null);
 
       // Act
       Assert.Throws<InvalidOperationException>(() => player.ApplyDamage(Gun.None, 2));

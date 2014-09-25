@@ -7,7 +7,7 @@ namespace Pistol.NET
     public const int MaxDamage = 5;
     public const int MaxNameLength = 20;
 
-    public Player(string name)
+    public Player(string name, IBangStrategy bangStrategy)
     {
       if (name == null)
         throw new ArgumentNullException("name");
@@ -16,6 +16,7 @@ namespace Pistol.NET
         name = name.Substring(0, MaxNameLength);
 
       Name = name;
+      BangStrategy = bangStrategy;
       LeftGun = 1;
       RightGun = 1;
     }
@@ -38,6 +39,7 @@ namespace Pistol.NET
     public int LeftGun { get; private set; }
     public int RightGun { get; private set; }
     public string Name { get; private set; }
+    public IBangStrategy BangStrategy { get; private set; }
 
     public void ApplyDamage(Gun gun, int damage)
     {

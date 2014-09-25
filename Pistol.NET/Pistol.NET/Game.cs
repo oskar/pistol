@@ -23,23 +23,21 @@ namespace Pistol.NET
     public void PlayTwoComputersAgainstEachOther()
     {
       // Get a random name for the first computer
-      var shooter = new Player(random_.NextItem(computerNames_));
+      var shooter = new Player(random_.NextItem(computerNames_), new RandomBangStrategy());
 
       // Create a new list of all computer names excluding the selected for the first computer
       var computerNamesExcludingSelected = computerNames_.ToList();
       computerNamesExcludingSelected.Remove(shooter.Name);
 
       // Get another random name for the second computer
-      var victim = new Player(random_.NextItem(computerNamesExcludingSelected));
+      var victim = new Player(random_.NextItem(computerNamesExcludingSelected), new RandomBangStrategy());
 
       var players = new List<Player> { shooter, victim };
-
-      var bangStrategy = new RandomBangStrategy();
 
       while (!shooter.IsPlayerDead && !victim.IsPlayerDead)
       {
         PlayerUtils.PrintPlayers(players);
-        Bang(bangStrategy, shooter, victim);
+        Bang(shooter, victim);
 
         // Swap turns
         var tmp = shooter;
@@ -56,11 +54,10 @@ namespace Pistol.NET
     public void PlayHumanAgainstComputer()
     {
       var humanName = ConsoleUtils.Ask("Please enter your name [max 20 chars]: ", 1, Player.MaxNameLength);
-      var human = new Player(humanName);
-      var computer = new Player(random_.NextItem(computerNames_));
+
+      var human = new Player(humanName, new HumanBangStrategy(humanName));
+      var computer = new Player(random_.NextItem(computerNames_), new RandomBangStrategy());
       var players = new List<Player> { human, computer };
-      var humanBangStrategy = new HumanBangStrategy(human.Name);
-      var computerBangStrategy = new RandomBangStrategy();
 
       var isHumanInTurn = true;
 
@@ -70,12 +67,12 @@ namespace Pistol.NET
 
         if (isHumanInTurn)
         {
-          Bang(humanBangStrategy, human, computer);
+          Bang(human, computer);
           Console.WriteLine();
         }
         else
         {
-          Bang(computerBangStrategy, computer, human);
+          Bang(computer, human);
           Console.ReadLine();
         }
 
@@ -89,7 +86,7 @@ namespace Pistol.NET
       Console.ReadLine();
     }
 
-    private static void Bang(IBangStrategy bangStrategy, Player shooter, Player victim)
+    private static void Bang(Player shooter, Player victim)
     {
       if (shooter.IsPlayerDead)
         throw new InvalidOperationException("Shooter is dead and cannot shoot.");
@@ -112,16 +109,16 @@ namespace Pistol.NET
       else if (shooterGun != Gun.None && victimGun == Gun.None)
       {
         var shooterGunDamage = shooter.GetGunDamage(shooterGun);
-        victimGun = bangStrategy.BangOneOnTwo(shooterGunDamage, victim.LeftGun, victim.RightGun);
+        victimGun = shooter.BangStrategy.BangOneOnTwo(shooterGunDamage, victim.LeftGun, victim.RightGun);
       }
       else if (shooterGun == Gun.None && victimGun != Gun.None)
       {
         var victimGunDamage = victim.GetGunDamage(victimGun);
-        shooterGun = bangStrategy.BangTwoOnOne(shooter.LeftGun, shooter.RightGun, victimGunDamage);
+        shooterGun = shooter.BangStrategy.BangTwoOnOne(shooter.LeftGun, shooter.RightGun, victimGunDamage);
       }
       else if (shooterGun == Gun.None && victimGun == Gun.None)
       {
-        var res = bangStrategy.Bang(shooter.LeftGun, shooter.RightGun, victim.LeftGun, victim.RightGun);
+        var res = shooter.BangStrategy.Bang(shooter.LeftGun, shooter.RightGun, victim.LeftGun, victim.RightGun);
         shooterGun = res.Item1;
         victimGun = res.Item2;
       }
