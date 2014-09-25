@@ -3,6 +3,7 @@ namespace Pistol.NET
 {
   using System;
   using System.Collections.Generic;
+  using System.Linq;
 
   class Program
   {
@@ -15,7 +16,7 @@ namespace Pistol.NET
         var mode = options.Mode;
         if (string.IsNullOrEmpty(mode))
         {
-          mode = ConsoleUtils.Ask("Please enter game mode: ", 1, 10);
+          mode = ConsoleUtils.Ask("Please enter game mode: ", input => input.Length > 1 && input.All(c => c == 'H' || c == 'C'));
         }
 
         var players = new List<Player>();
