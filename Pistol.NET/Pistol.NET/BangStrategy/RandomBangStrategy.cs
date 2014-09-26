@@ -4,12 +4,7 @@ namespace Pistol.NET.BangStrategy
 {
   public class RandomBangStrategy : IBangStrategy
   {
-    private static readonly Random rnd_ = new Random();
-
-    private static Gun GetRandomGun()
-    {
-      return rnd_.NextBoolean() ? Gun.Right : Gun.Left;
-    }
+    private readonly Random rnd_ = new Random();
 
     public Tuple<Gun, Gun> Bang(int shooterLeftGun, int shooterRightGun, int victimLeftGun, int victimRightGun)
     {
@@ -24,6 +19,11 @@ namespace Pistol.NET.BangStrategy
     public Gun BangTwoOnOne(int shooterLeftGun, int shooterRightGun, int victimGun)
     {
       return GetRandomGun();
+    }
+
+    private Gun GetRandomGun()
+    {
+      return rnd_.NextBoolean() ? Gun.Right : Gun.Left;
     }
   }
 }
