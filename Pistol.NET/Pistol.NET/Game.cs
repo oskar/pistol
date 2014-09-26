@@ -1,107 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Pistol.NET.BangStrategy;
 using Pistol.NET.Utils;
 
 namespace Pistol.NET
 {
   public class Game
   {
-    private static readonly Random random_ = new Random();
-
-    private static readonly IList<string> computerNames_ = new List<string>
-                                                   {
-                                                     "Hail Bop",
-                                                     "Default",
-                                                     "Firewater",
-                                                     "Waveforms",
-                                                     "Zumm zumm",
-                                                     "WOR",
-                                                     "Storm",
-                                                     "Silver Rays"
-                                                   };
-
-    public void PlayTwoComputersAgainstEachOther()
-    {
-      // Get a random name for the first computer
-      var shooter = new Player(random_.NextItem(computerNames_), new RandomBangStrategy());
-
-      // Create a new list of all computer names excluding the selected for the first computer
-      var computerNamesExcludingSelected = computerNames_.ToList();
-      computerNamesExcludingSelected.Remove(shooter.Name);
-
-      // Get another random name for the second computer
-      var victim = new Player(random_.NextItem(computerNamesExcludingSelected), new RandomBangStrategy());
-
-      var players = new List<Player> { shooter, victim };
-
-      while (!shooter.IsPlayerDead && !victim.IsPlayerDead)
-      {
-        PlayerUtils.PrintPlayers(players);
-        Bang(shooter, victim);
-
-        // Swap turns
-        var tmp = shooter;
-        shooter = victim;
-        victim = tmp;
-
-        Console.ReadLine();
-      }
-
-      PlayerUtils.PrintPlayers(players);
-      Console.ReadLine();
-    }
-
-    public void PlayHumanAgainstComputer()
-    {
-      var humanName = ConsoleUtils.Ask("Please enter your name [max 20 chars]: ", 1, Player.MaxNameLength);
-
-      var human = new Player(humanName, new HumanBangStrategy(humanName));
-      var computer = new Player(random_.NextItem(computerNames_), new RandomBangStrategy());
-      var players = new List<Player> { human, computer };
-
-      var isHumanInTurn = true;
-
-      while (!human.IsPlayerDead && !computer.IsPlayerDead)
-      {
-        PlayerUtils.PrintPlayers(players);
-
-        if (isHumanInTurn)
-        {
-          Bang(human, computer);
-          Console.WriteLine();
-        }
-        else
-        {
-          Bang(computer, human);
-          Console.ReadLine();
-        }
-
-        // Swap turns
-        isHumanInTurn = !isHumanInTurn;
-      }
-
-      // Game is over, one of the players is dead
-      PlayerUtils.PrintPlayers(players);
-      Console.WriteLine(human.IsPlayerDead ? "Sorry {0}, you lost!" : "Congratulations {0}, you won!", human.Name);
-      Console.ReadLine();
-    }
-
-    public void PlayThreePlayers()
-    {
-      var comp1 = new Player("Comp 1", new RandomBangStrategy());
-      var human = new Player("Oskar", new HumanBangStrategy("Oskar"));
-      var comp3 = new Player("Comp 3", new RandomBangStrategy());
-
-      var players = new[] { comp1, human, comp3 };
-
-      Play(players);
-
-      PlayerUtils.PrintPlayers(players);
-      Console.ReadLine();
-    }
-
     public void Play(IEnumerable<Player> players)
     {
       var playersRing = new LinkedList<Player>(players);
@@ -131,13 +36,17 @@ namespace Pistol.NET
 
       while (true)
       {
-        // Get next player
+        // Get next player in line
         player = player.Next ?? player.List.First;
 
+        // Return null when we have tried all players and are back where we started
+        // (or if the linked list only contains one item)
         if (player == startingPlayer)
           return null;
 
-        if (!player.Value.IsPlayerDead) return player;
+        // Return player if alive, otherwise continue searching
+        if (!player.Value.IsPlayerDead)
+          return player;
       }
     }
 
