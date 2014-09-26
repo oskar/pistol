@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Pistol.NET
+namespace Pistol.NET.Utils
 {
   public static class PlayerUtils
   {

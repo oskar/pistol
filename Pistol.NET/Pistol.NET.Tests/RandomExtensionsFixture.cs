@@ -1,12 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 
 namespace Pistol.NET.Tests
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-
-
   [TestFixture]
   public class RandomExtensionsFixture
   {

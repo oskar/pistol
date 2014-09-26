@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pistol.NET
+namespace Pistol.NET.BangStrategy
 {
   public interface IBangStrategy
   {

@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.IO;
+using NUnit.Framework;
+using Pistol.NET.Utils;
 
 namespace Pistol.NET.Tests
 {
-  using System;
-  using System.IO;
-
   [TestFixture]
   public class ConsoleUtilsFixture
   {

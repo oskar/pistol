@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Pistol.NET.BangStrategy;
 
 namespace Pistol.NET.Tests
 {

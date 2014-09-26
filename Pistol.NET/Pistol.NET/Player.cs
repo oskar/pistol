@@ -1,4 +1,5 @@
 ﻿using System;
+using Pistol.NET.BangStrategy;
 
 namespace Pistol.NET
 {

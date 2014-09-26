@@ -1,10 +1,11 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Pistol.NET.BangStrategy;
+using Pistol.NET.Utils;
+
 namespace Pistol.NET
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-
   class Program
   {
     static void Main(string[] args)

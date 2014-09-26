@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
+using Pistol.NET.BangStrategy;
 
 namespace Pistol.NET.Tests
 {
-  using System.Collections.Generic;
-
   [TestFixture]
   public class RandomBangStrategyFixture
   {

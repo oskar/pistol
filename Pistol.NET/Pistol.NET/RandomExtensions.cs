@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Pistol.NET
 {
-  using System.Collections.Generic;
-
   public static class RandomExtensions
   {
     public static bool NextBoolean(this Random rnd)

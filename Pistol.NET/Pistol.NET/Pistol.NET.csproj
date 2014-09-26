@@ -44,13 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="Utils\ConsoleUtils.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="HumanBangStrategy.cs" />
-    <Compile Include="PlayerUtils.cs" />
-    <Compile Include="RandomBangStrategy.cs" />
+    <Compile Include="BangStrategy\HumanBangStrategy.cs" />
+    <Compile Include="Utils\PlayerUtils.cs" />
+    <Compile Include="BangStrategy\RandomBangStrategy.cs" />
     <Compile Include="Gun.cs" />
-    <Compile Include="IBangStrategy.cs" />
+    <Compile Include="BangStrategy\IBangStrategy.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />

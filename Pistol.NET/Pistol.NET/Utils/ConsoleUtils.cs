@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Pistol.NET
+namespace Pistol.NET.Utils
 {
   public static class ConsoleUtils
   {
