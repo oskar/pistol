@@ -14,7 +14,7 @@ namespace Pistol.NET.Tests
       var bangStrategy = new RandomBangStrategy();
 
       // Act
-      var player = new Player("", bangStrategy);
+      var player = new Player("", bangStrategy, null);
 
       // Assert
       Assert.That(player.Name, Is.EqualTo(""));
@@ -27,7 +27,7 @@ namespace Pistol.NET.Tests
     public void TestPlayerApplyDamage()
     {
       // Arrange
-      var player = new Player("", null);
+      var player = new Player("", null, null);
 
       // Act
       Assert.Throws<InvalidOperationException>(() => player.ApplyDamage(Gun.None, 2));

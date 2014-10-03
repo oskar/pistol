@@ -5,11 +5,11 @@ namespace Pistol.NET.BangStrategy
 {
   public class HumanBangStrategy : IBangStrategy
   {
-    private string name_;
+    private readonly string name_;
 
     public HumanBangStrategy(string humanName)
     {
-      this.name_ = humanName;
+      name_ = humanName;
     }
 
     public Tuple<Gun, Gun> Bang(int shooterLeftGun, int shooterRightGun, int victimLeftGun, int victimRightGun)

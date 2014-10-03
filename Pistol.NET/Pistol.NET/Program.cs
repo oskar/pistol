@@ -55,12 +55,12 @@ namespace Pistol.NET
       if (modeLetter == 'H')
       {
         var playerName = ConsoleUtils.Ask(string.Format("Player {0}, please enter your name: ", playerNumber), 1, Player.MaxNameLength);
-        return new Player(playerName, new HumanBangStrategy(playerName));
+        return new Player(playerName, new HumanBangStrategy(playerName), null);
       }
 
       if (modeLetter == 'C')
       {
-        return new Player(random_.NextItem(computerNames_), new RandomBangStrategy());
+        return new Player(random_.NextItem(computerNames_), null, new RandomMultiPlayerBangStrategy());
       }
 
       throw new InvalidOperationException("Unexpected char in mode string: " + modeLetter);

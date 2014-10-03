@@ -8,7 +8,7 @@ namespace Pistol.NET
     public const int MaxDamage = 5;
     public const int MaxNameLength = 20;
 
-    public Player(string name, IBangStrategy bangStrategy)
+    public Player(string name, IBangStrategy bangStrategy, IMultiPlayerBangStrategy multiPlayerBangStrategy)
     {
       if (name == null)
         throw new ArgumentNullException("name");
@@ -18,6 +18,7 @@ namespace Pistol.NET
 
       Name = name;
       BangStrategy = bangStrategy;
+      MultiPlayerBangStrategy = multiPlayerBangStrategy;
       LeftGun = 1;
       RightGun = 1;
     }
@@ -41,6 +42,7 @@ namespace Pistol.NET
     public int RightGun { get; private set; }
     public string Name { get; private set; }
     public IBangStrategy BangStrategy { get; private set; }
+    public IMultiPlayerBangStrategy MultiPlayerBangStrategy { get; private set; }
 
     public void ApplyDamage(Gun gun, int damage)
     {
