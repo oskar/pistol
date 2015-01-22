@@ -14,8 +14,10 @@ defmodule Pistol do
       # If shooter hands are equal, it doesn't matter which we use (go with left)
       left == right -> :left
 
-      # Undefined, should never get here
-      true -> :nil
+      # Minimize victim hand
+      left <= right -> :left
+
+      true -> :right
     end
   end
 

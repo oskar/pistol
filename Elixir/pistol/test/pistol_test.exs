@@ -29,6 +29,11 @@ defmodule PistolTest do
     assert Enum.member? [:left, :right], Pistol.bang([3, 3], 1)
   end
 
+  test "Two-on-one: Minimize victim hand" do
+    assert Pistol.bang([1, 3], 1) == :left
+    assert Pistol.bang([3, 1], 1) == :right
+  end
+
 
 
   test "One-on-two: Kill one hand if possible" do
