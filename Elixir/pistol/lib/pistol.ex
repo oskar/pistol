@@ -20,7 +20,9 @@ defmodule Pistol do
 
   def bang(shooter, [left, right]) do
     cond do
-      # TODO: If possible to kill both hands, kill the one with odd number
+      shooter + left >= 5 and shooter + right >= 5 and Integer.is_odd(shooter + right) -> :left
+      shooter + left >= 5 and shooter + right >= 5 and Integer.is_odd(shooter + left) -> :right
+
       # Kill one hand if possible
       shooter + left >= 5 -> :left
       shooter + right >= 5 -> :right
