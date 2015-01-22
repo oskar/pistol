@@ -14,18 +14,24 @@ defmodule Pistol do
       # If shooter hands are equal, it doesn't matter which we use (go with left)
       left == right -> :left
 
+      # Undefined, should never get here
       true -> :nil
     end
   end
 
   def bang(shooter, [left, right]) do
     cond do
-      shooter + left >= 5 and shooter + right >= 5 and Integer.is_odd(shooter + right) -> :left
-      shooter + left >= 5 and shooter + right >= 5 and Integer.is_odd(shooter + left) -> :right
+      (shooter + left >= 5) and (shooter + right >= 5) and Integer.is_odd(right) -> :left
+      (shooter + left >= 5) and (shooter + right >= 5) and Integer.is_odd(left) -> :right
 
       # Kill one hand if possible
       shooter + left >= 5 -> :left
       shooter + right >= 5 -> :right
+
+      # Go for smallest hand
+      left <= right -> :left
+
+      true -> :right
     end
   end
 end

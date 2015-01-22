@@ -46,4 +46,12 @@ defmodule PistolTest do
     assert Pistol.bang(3, [2, 3]) == :left
     assert Pistol.bang(3, [3, 2]) == :right
   end
+
+  test "One-on-two: Go for smallest hand" do
+    assert Pistol.bang(1, [2, 3]) == :left
+    assert Pistol.bang(1, [3, 2]) == :right
+
+    assert Pistol.bang(2, [1, 2]) == :left
+    assert Pistol.bang(2, [2, 1]) == :right
+  end
 end
