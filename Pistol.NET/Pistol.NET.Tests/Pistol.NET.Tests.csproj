@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CleverBangStrategyFixture.cs" />
     <Compile Include="ConsoleUtilsFixture.cs" />
+    <Compile Include="MathUtilsFixture.cs" />
     <Compile Include="RandomBangStrategyFixture.cs" />
     <Compile Include="PlayerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
